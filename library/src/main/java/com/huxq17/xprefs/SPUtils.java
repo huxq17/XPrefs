@@ -26,6 +26,7 @@ public class SPUtils {
     public static void setFileName(String name) {
         if (!TextUtils.isEmpty(name)) {
             fileNameLocal.set(name);
+            fileModeLocal.set(Context.MODE_PRIVATE);
         }
     }
 

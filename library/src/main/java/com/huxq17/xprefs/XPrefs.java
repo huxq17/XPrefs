@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.huxq17.xprefs.annotations.XIgnore;
+import com.huxq17.xprefs.processor.PrefsProxyProcessor;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -15,6 +16,7 @@ import java.util.Map;
  */
 public class XPrefs {
     private static Context mContext;
+    private static final PrefsProxyProcessor prefsProxyProcessor = new PrefsProxyProcessor();
 
     /**
      * 使用前需先绑定contenxt
@@ -57,14 +59,20 @@ public class XPrefs {
     }
 
     public static <T> T getObject(Class<T> cls) {
-        return ProxyHandler.getObject(cls);
+        return ProxyHandler.getObject(cls, prefsProxyProcessor);
     }
 
     public static SharedPreferences getSharedPrefs(String fileName, int fileMode) {
         return SPUtils.getSharedPrefs(mContext, fileName, fileMode);
     }
 
-    public static void put(Object javabean, String key) {
+    /**
+     * 保存javabean中的单个字段
+     *
+     * @param javabean
+     * @param key      字段的名称
+     */
+    public static void save(Object javabean, String key) {
         SharedPreferences.Editor editor = getEditor();
         add(editor, javabean, key);
         apply(editor);
@@ -86,7 +94,7 @@ public class XPrefs {
         SPUtils.remove(mContext, key);
     }
 
-    public static void put(Object javabean) {
+    public static void saveAll(Object javabean) {
         if (javabean == null) {
             return;
         }
