@@ -16,7 +16,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         saveAll();
         save();
-        saveAllAndFollowYourHeart();
+//        saveAllAndFollowYourHeart();
+        test();
     }
 
     /**
@@ -79,9 +80,19 @@ public class MainActivity extends AppCompatActivity {
         user.setFuns(4000);
         user.setMoney(40000);
         user.setVip(true);
-        LogUtils.i("saveAllAndFollowYourHeart name=" + user.getName() + ";money=" + user.getMoney() + ";age=" + user.getAge()
+        LogUtils.i("IUser name=" + user.getName() + ";money=" + user.getMoney() + ";age=" + user.getAge()
                 + ";funs=" + user.getFuns() + ";isVIP=" + user.getVip());
     }
 
+    private void test() {
+        IEmployee employee = XPrefs.getObject(IEmployee.class);
+        employee.setName("小明");
+        employee.setAge(22);
+        employee.setSalary(3000);
+//        String name = employee.getName();
+        int age = employee.getAge();
+        float salary = employee.getSalary();
+//        LogUtils.i("IEmployee name=" + employee.getName() + ";age=" + employee.getAge() + ";salary=" + employee.getSalary());
+    }
 
 }

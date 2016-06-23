@@ -36,7 +36,7 @@ public interface IUser {
     boolean getVip();
 
     @XSet(key = "money")
-    void setMoney(float vip);
+    void setMoney(float money);
 
     @XGet(key = "money")
     float getMoney();

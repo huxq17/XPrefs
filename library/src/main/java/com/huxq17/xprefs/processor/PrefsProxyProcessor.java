@@ -45,26 +45,43 @@ public class PrefsProxyProcessor implements ProxyProcessor {
                 throw new RuntimeException("@XSet and @XGet can not exist together!");
             }
             if (method.isAnnotationPresent(XGet.class)) {
-                return doGet(method, fileName, fileMode);
+                return doGet(method, fileName, fileMode, true);
             } else if (method.isAnnotationPresent(XSet.class)) {
-                doSet(method, args, fileName, fileMode);
+                doSet(method, args, fileName, fileMode, true);
             } else {
-                LogUtils.e("Method " + method.getName() + " have neither @XGet nor @XSet, so return null");
+                String methodName = method.getName();
+                if (methodName.startsWith("get")) {
+                    doGet(method, fileName, fileMode, false);
+                } else if (methodName.startsWith("set")) {
+                    doSet(method, args, fileName, fileMode, false);
+                }
             }
         }
         return null;
     }
 
-    private void doSet(Method method, Object[] args, String fileName, int fileMode) {
-        if (!TextUtils.isEmpty(method.getAnnotation(XSet.class).fileName())) {
-            fileName = method.getAnnotation(XSet.class).fileName();
-            fileMode = method.getAnnotation(XSet.class).fileMode();
+    private void doSet(Method method, Object[] args, String fileName, int fileMode, boolean hasSetAnnotation) {
+        String key = null;
+        if (hasSetAnnotation) {
+            if (!TextUtils.isEmpty(method.getAnnotation(XSet.class).fileName())) {
+                fileName = method.getAnnotation(XSet.class).fileName();
+                fileMode = method.getAnnotation(XSet.class).fileMode();
+            }
+            key = method.getAnnotation(XSet.class).key();
+        } else {
+            String methodName = method.getName();
+            if (methodName.startsWith("set")) {
+                String tempKey = methodName.replaceFirst("set", "");
+                if (!TextUtils.isEmpty(tempKey)) {
+                    key = tempKey.toLowerCase();
+                }
+            }
         }
-        String key = method.getAnnotation(XSet.class).key();
         if (TextUtils.isEmpty(key)) {
-            LogUtils.e("SharedPreferences's key " + key + " in @XSet is empty, so return null");
+            LogUtils.e("SharedPreferences's key " + key + " is empty, so return null");
             return;
         }
+        LogUtils.i("method " + method.getName() + ";key=" + key);
         if (args == null || (args.length == 0) || args.length > 1 || args[0] == null) {
             throw new RuntimeException("method " + method.getName() + " can have one and only one parameter,and paramter can not be null");
         }
@@ -86,19 +103,29 @@ public class PrefsProxyProcessor implements ProxyProcessor {
         XPrefs.apply(editor);
     }
 
-    private Object doGet(Method method, String fileName, int fileMode) {
-        if (!TextUtils.isEmpty(method.getAnnotation(XGet.class).fileName())) {
-            fileName = method.getAnnotation(XGet.class).fileName();
-            fileMode = method.getAnnotation(XGet.class).fileMode();
+    private Object doGet(Method method, String fileName, int fileMode, boolean hasGetAnnotation) {
+        String key = null;
+        if (hasGetAnnotation) {
+            if (!TextUtils.isEmpty(method.getAnnotation(XGet.class).fileName())) {
+                fileName = method.getAnnotation(XGet.class).fileName();
+                fileMode = method.getAnnotation(XGet.class).fileMode();
+            }
+            key = method.getAnnotation(XGet.class).key();
+        } else {
+            String methodName = method.getName();
+            if (methodName.startsWith("get")) {
+                String tempKey = methodName.replaceFirst("get", "");
+                if (!TextUtils.isEmpty(tempKey)) {
+                    key = tempKey.toLowerCase();
+                }
+            }
         }
-        String key = method.getAnnotation(XGet.class).key();
         if (TextUtils.isEmpty(key)) {
-            LogUtils.e("SharedPreferences's key " + key + " in @XGet is empty, so return null");
-            return null;
+            throw new RuntimeException("SharedPreferences's key " + key + "  is empty, so this exception occurred");
         }
+        LogUtils.i("method " + method.getName() + ";key=" + key);
         if (!XPrefs.contains(key, fileName, fileMode)) {
-            LogUtils.e("SharedPreferences's file " + fileName + " do not contain key=" + key + ", so return null");
-            return null;
+            throw new RuntimeException("SharedPreferences's file " + fileName + " do not contain key=" + key + ", so this exception occurred");
         }
         Type returnType = method.getGenericReturnType();
         SharedPreferences sp = XPrefs.getSharedPrefs(fileName, fileMode);
@@ -108,6 +135,7 @@ public class PrefsProxyProcessor implements ProxyProcessor {
             } catch (ClassCastException e) {
                 throw new RuntimeException(String.format(MSG_ERROR_RETURN_TYPE, key, returnType, method.getName()));
             }
+            LogUtils.i("result get int "+sp.getInt(key, -1));
             return sp.getInt(key, -1);
         } else if (returnType == Float.TYPE) {
             try {
