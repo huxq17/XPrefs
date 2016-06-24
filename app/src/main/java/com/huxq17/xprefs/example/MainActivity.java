@@ -25,33 +25,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 整存整取，把javabean类中的所有有效的字段都写入sharedpreferences中
-     */
-    private void saveAll() {
-        //如果想切换写入的sharedpreferences文件，可以调用
-//        XPrefs.changeFileName("your custom sp file's name");
-        //如果设置Mode，必须在changeFileName之后调用
-//        XPrefs.changeFileMode(Context.MODE_PRIVATE);
-        //或者直接调用
-//        XPrefs.changeFileNameAndMode("your custom sp file's name", Context.MODE_PRIVATE);
-
-        XPrefs.changeFileName(spFile1);
-        UserBean userBean = new UserBean();
-        userBean.setAge(21);
-        userBean.setFuns(1000);
-        userBean.setMoney(100);
-        userBean.setName("韩梅梅");
-        userBean.setVIP(true);
-        XPrefs.saveAll(userBean);
-        //读取，查看存入的数据
-        userBean = XPrefs.get(UserBean.class);
-        LogUtils.i("saveAll " + userBean);
-    }
-
-    /**
      * 单个字段的存储和读取
      */
     public void save() {
+        //修改存储的sharedpreferences文件，mode默认为Context.MODE_PRIVATE
         XPrefs.changeFileName(spFile2);
         UserBean userBean = new UserBean();
         userBean.setAge(42);
@@ -77,6 +54,30 @@ public class MainActivity extends AppCompatActivity {
         LogUtils.i("save " + userBean.toString());
     }
 
+    /**
+     * 整存整取，把javabean类中的所有有效的字段都写入sharedpreferences中
+     */
+    private void saveAll() {
+        //如果想切换写入的sharedpreferences文件，可以调用
+//        XPrefs.changeFileName("your custom sp file's name");
+        //如果设置Mode，必须在changeFileName之后调用
+//        XPrefs.changeFileMode(Context.MODE_PRIVATE);
+        //或者直接调用
+//        XPrefs.changeFileNameAndMode("your custom sp file's name", Context.MODE_PRIVATE);
+
+        XPrefs.changeFileName(spFile1);
+        UserBean userBean = new UserBean();
+        userBean.setAge(21);
+        userBean.setFuns(1000);
+        userBean.setMoney(100);
+        userBean.setName("韩梅梅");
+        userBean.setVIP(true);
+        XPrefs.saveAll(userBean);
+        //读取，查看存入的数据
+        userBean = XPrefs.get(UserBean.class);
+        LogUtils.i("saveAll " + userBean);
+    }
+
     private void saveAllAndFollowYourHeart() {
         IUser user = XPrefs.getObject(IUser.class);
         user.setName("Tom");
@@ -95,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
         employee.setSalary(3000);
         LogUtils.i("IEmployee name=" + employee.getName() + ";age=" + employee.getAge() + ";salary=" + employee.getSalary());
     }
-    private void saveAllAndFollowYourHeartThree(){
+
+    private void saveAllAndFollowYourHeartThree() {
         IStudent student = XPrefs.getObject(IStudent.class);
         student.name("学生3号");
         student.score(100);
