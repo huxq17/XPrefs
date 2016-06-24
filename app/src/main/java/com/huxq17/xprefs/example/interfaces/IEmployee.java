@@ -9,8 +9,18 @@ import com.huxq17.xprefs.annotations.XSPFile;
  */
 @XSPFile(fileName = "IEmployee", fileMode = Context.MODE_PRIVATE)
 public interface IEmployee {
+    /**
+     * 存储字段 name
+     *
+     * @param name value
+     */
     void setName(String name);
 
+    /**
+     * 读取字段 name
+     *
+     * @return
+     */
     String getName();
 
     void setAge(int age);
