@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.huxq17.xprefs.LogUtils;
 import com.huxq17.xprefs.XPrefs;
+import com.huxq17.xprefs.example.interfaces.IEmployee;
+import com.huxq17.xprefs.example.interfaces.IStudent;
+import com.huxq17.xprefs.example.interfaces.IUser;
 
 public class MainActivity extends AppCompatActivity {
     private String spFile1 = "spfile1";
@@ -16,8 +19,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         saveAll();
         save();
-//        saveAllAndFollowYourHeart();
-        test();
+        saveAllAndFollowYourHeart();
+        saveAllAndFollowYourHeartToo();
+        saveAllAndFollowYourHeartThree();
     }
 
     /**
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         XPrefs.saveAll(userBean);
         //读取，查看存入的数据
         userBean = XPrefs.get(UserBean.class);
-        LogUtils.i("saveAll " + userBean.toString());
+        LogUtils.i("saveAll " + userBean);
     }
 
     /**
@@ -84,15 +88,19 @@ public class MainActivity extends AppCompatActivity {
                 + ";funs=" + user.getFuns() + ";isVIP=" + user.getVip());
     }
 
-    private void test() {
+    private void saveAllAndFollowYourHeartToo() {
         IEmployee employee = XPrefs.getObject(IEmployee.class);
-        employee.setName("小明");
+        employee.setName("员工");
         employee.setAge(22);
         employee.setSalary(3000);
-//        String name = employee.getName();
-        int age = employee.getAge();
-        float salary = employee.getSalary();
-//        LogUtils.i("IEmployee name=" + employee.getName() + ";age=" + employee.getAge() + ";salary=" + employee.getSalary());
+        LogUtils.i("IEmployee name=" + employee.getName() + ";age=" + employee.getAge() + ";salary=" + employee.getSalary());
+    }
+    private void saveAllAndFollowYourHeartThree(){
+        IStudent student = XPrefs.getObject(IStudent.class);
+        student.name("学生3号");
+        student.score(100);
+        student.sex("女");
+        LogUtils.i("IStudent name=" + student.name() + ";score=" + student.score() + ";sex=" + student.sex());
     }
 
 }

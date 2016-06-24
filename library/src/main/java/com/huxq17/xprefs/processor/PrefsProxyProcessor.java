@@ -51,9 +51,15 @@ public class PrefsProxyProcessor implements ProxyProcessor {
             } else {
                 String methodName = method.getName();
                 if (methodName.startsWith("get")) {
-                    doGet(method, fileName, fileMode, false);
+                    return doGet(method, fileName, fileMode, false);
                 } else if (methodName.startsWith("set")) {
                     doSet(method, args, fileName, fileMode, false);
+                } else {
+                    if (args != null && args.length == 1) {
+                        doSet(method, args, fileName, fileMode, false);
+                    } else if (method.getGenericReturnType() != Void.TYPE) {
+                        return doGet(method, fileName, fileMode, false);
+                    }
                 }
             }
         }
@@ -74,14 +80,17 @@ public class PrefsProxyProcessor implements ProxyProcessor {
                 String tempKey = methodName.replaceFirst("set", "");
                 if (!TextUtils.isEmpty(tempKey)) {
                     key = tempKey.toLowerCase();
+                }else{
+                    throw new RuntimeException("method name can't be set, so this exception occurred");
                 }
+            } else {
+                key = methodName;
             }
         }
         if (TextUtils.isEmpty(key)) {
             LogUtils.e("SharedPreferences's key " + key + " is empty, so return null");
             return;
         }
-        LogUtils.i("method " + method.getName() + ";key=" + key);
         if (args == null || (args.length == 0) || args.length > 1 || args[0] == null) {
             throw new RuntimeException("method " + method.getName() + " can have one and only one parameter,and paramter can not be null");
         }
@@ -117,13 +126,16 @@ public class PrefsProxyProcessor implements ProxyProcessor {
                 String tempKey = methodName.replaceFirst("get", "");
                 if (!TextUtils.isEmpty(tempKey)) {
                     key = tempKey.toLowerCase();
+                }else{
+                    throw new RuntimeException("method name can't be get, so this exception occurred");
                 }
+            } else {
+                key = methodName;
             }
         }
         if (TextUtils.isEmpty(key)) {
             throw new RuntimeException("SharedPreferences's key " + key + "  is empty, so this exception occurred");
         }
-        LogUtils.i("method " + method.getName() + ";key=" + key);
         if (!XPrefs.contains(key, fileName, fileMode)) {
             throw new RuntimeException("SharedPreferences's file " + fileName + " do not contain key=" + key + ", so this exception occurred");
         }
@@ -135,7 +147,6 @@ public class PrefsProxyProcessor implements ProxyProcessor {
             } catch (ClassCastException e) {
                 throw new RuntimeException(String.format(MSG_ERROR_RETURN_TYPE, key, returnType, method.getName()));
             }
-            LogUtils.i("result get int "+sp.getInt(key, -1));
             return sp.getInt(key, -1);
         } else if (returnType == Float.TYPE) {
             try {
@@ -166,8 +177,7 @@ public class PrefsProxyProcessor implements ProxyProcessor {
             }
             return sp.getString(key, "");
         } else {
-            LogUtils.e("can not support type " + returnType + ",please contact author for help");
+            throw new RuntimeException("can not support type " + returnType + ",please contact author for help");
         }
-        return null;
     }
 }

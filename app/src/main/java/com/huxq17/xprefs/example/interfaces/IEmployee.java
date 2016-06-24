@@ -1,4 +1,4 @@
-package com.huxq17.xprefs.example;
+package com.huxq17.xprefs.example.interfaces;
 
 import android.content.Context;
 
