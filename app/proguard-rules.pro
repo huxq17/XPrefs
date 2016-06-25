@@ -15,3 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keep class * extends java.lang.annotation.Annotation { *; }
+-keep interface com.huxq17.xprefs.example.interfaces.** { *; }
+-keep class com.huxq17.xprefs.example.** { *; }
+
