@@ -12,8 +12,11 @@ dependencies {
 ```
 
 ##### 混淆时注意事项：
-* 不要混淆XPrefs中的注解类型，添加混淆配置：-keep class * extends java.lang.annotation.Annotation { *; }
-* 对于用于持久化的实体类不要混淆，包含javaBean和接口，在的demo中是这样的：
+* 不要混淆XPrefs中的注解类型，添加混淆配置：
+```
+      -keep class * extends java.lang.annotation.Annotation { *; }
+```
+* 对于用于持久化的实体类不要混淆，包含javaBean和接口，在demo中是这样的：
 ```
       -keep interface com.huxq17.xprefs.example.interfaces.** { *; }
       -keep class com.huxq17.xprefs.example.** { *; }
