@@ -19,7 +19,10 @@ dependencies {
 * 对于用于持久化的实体类不要混淆，包含javaBean和接口，在demo中是这样的：
 ```
       -keep interface com.huxq17.xprefs.example.interfaces.** { *; }
-      -keep class com.huxq17.xprefs.example.** { *; }
+      -keepclasseswithmembers class com.huxq17.xprefs.example.UserBean {
+        <fields>;
+        <methods>;
+      }
 ```
 
 具体根据自己项目情况而定。

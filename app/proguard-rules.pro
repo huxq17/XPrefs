@@ -17,5 +17,8 @@
 #}
 -keep class * extends java.lang.annotation.Annotation { *; }
 -keep interface com.huxq17.xprefs.example.interfaces.** { *; }
--keep class com.huxq17.xprefs.example.** { *; }
+-keepclasseswithmembers class com.huxq17.xprefs.example.UserBean {
+    <fields>;
+    <methods>;
+}
 
