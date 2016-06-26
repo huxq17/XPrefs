@@ -125,7 +125,7 @@ String name = XPrefs.getString(cls, "name");
         LogUtils.i("IUser name=" + user.getName() + ";money=" + user.getMoney() + ";age=" + user.getAge()+ ";funs=" + user.getFuns() + ";isVIP=" + user.getVip());
     }
 ```
-首先，调用了XPrefs.getObject(IUser.class)那到了接口IUser的一个实例对象user，接着分别调用了user的set和get方法，看上去没什么，但是，在执行set方法的时候就已经把数据 存了起来，执行get方法就是把数据读取出来。
+首先，调用了XPrefs.getObject(IUser.class)拿到了接口IUser的一个实例对象user，接着分别调用了user的set和get方法，看上去没什么，但是，在执行set方法的时候就已经把数据 存了起来，执行get方法就是把数据读取出来。
 具体让我们看看IUser接口，
 
 ```
