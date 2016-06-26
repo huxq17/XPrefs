@@ -12,14 +12,14 @@ dependencies {
 ```
 ### **用法**
 
- - *初始化*
+####*初始化*
 
 ```
   XPrefs.bind(this);
 ```
 初始化是绑定了contenxt，之后的操作就不需要传入context参数了，如果你传入activity，会自动转成application context，这样就避免了内存泄漏的问题，当然你也可以在application的类里进行绑定操作。
 
- - *整存整取*
+####*整存整取*
 
 ```
  /**
@@ -46,7 +46,9 @@ dependencies {
         LogUtils.i("saveAll " + userBean);
     }
 ```
-上面代码中的changeFileName和changeFileMode方法分别是设置Sharedpreferences文件的name和mode的，要注意的是，如果调用了changeFileName，那么需要调用changeFileMode的话就必须要在changeFileName之后调用。接着new了一个UserBean的实例，给需要保存的属性设置了对应的值，然后调用saveAll就把UserBean中所有的属性都保存进了SharedPreferences文件里，其中key是属性名，value是属性的值。让我们接着看看UserBean这个类，
+上面代码中的changeFileName和changeFileMode方法分别是设置Sharedpreferences文件的name和mode的，要注意的是，如果调用了changeFileName，那么需要调用changeFileMode的话就必须要在changeFileName之后调用。如果不设置name，默认操作的文件名是XPrefs，默认的mode是Context.MODE_PRIVATE。
+
+接着new了一个UserBean的实例，给需要保存的属性设置了对应的值，然后调用saveAll就把UserBean中所有的属性都保存进了SharedPreferences文件里，其中key是属性名，value是属性的值。让我们接着看看UserBean这个类，
 ```
     /**
      * final 修饰的字段不会被存储
@@ -72,7 +74,7 @@ dependencies {
     
 既然可以保存和读取整个javaBean，那么也应该可以对javaBean中的单个属性进行存储和读取。
 
- - *单个字段的存储和读取*
+####*单个字段的存储和读取*
 
 ```
  /**
@@ -112,7 +114,7 @@ String name = XPrefs.getString(cls, "name");
 ```
 要注意的save和getString方法传入的第二个参数得和属性名相同，才能达到想要的效果。也就是如果定义了一个属性private String name;那么传入的就得是“name”。看上去有点麻烦，确实挺麻烦的，但这只是一种用法，更方便的用法后面会介绍。
 
- - *使用接口和注解*
+####*使用接口和注解*
 
 ```
     private void saveAllAndFollowYourHeart() {
@@ -162,7 +164,7 @@ public interface IUser {
     float getMoney();
 }
 ```
-有三个注解XSPFile,XSet和XGet，其中XSPFile是用来指定file name和mode的，用来标记接口，作用域是类。
+有三个注解XSPFile,XSet和XGet，这三个注解都不是必需的。其中XSPFile是用来指定file name和mode的，用来标记接口，作用域是类。
 
 ```
 @XSPFile(fileName = "IUser", fileMode = Context.MODE_PRIVATE)
@@ -180,7 +182,7 @@ void setName(String name);
 ```
 这样也不是很好，每写一个方法就得加一个注解，好麻烦的说，所以还可以更简单点。
 
- - *使用接口不用注解*
+####*使用接口不用注解*
 
 ```
 private void saveAllAndFollowYourHeartToo() {
@@ -221,7 +223,7 @@ public interface IEmployee {
 ```
 可以看到，不用注解以后，代码少了将近一半。这个时候key主要是通过解析方法名来得到的，所以一个方法以set开头，那么这个方法的作用就是写入数据到指定的SharedPreferences文件中，其中key就是方法名除去set的后半部分，举个例子，方法setName的key就是name；那么一个以get开头的方法的作用也是很明显了，就是从SharedPreferences文件中读取数据，其中key就是方法名出去get的后半部分，举个例子，方法getName的key就是name。这里的方法名遵循了驼峰命名的规则，方法setName和setname的key都是name。看上去已经很方便了，但是这都不算什么，更骚的在后面。
 
- - *最后一种用法*
+####*最后一种用法*
 
 ```
  private void saveAllAndFollowYourHeartThree() {
@@ -265,7 +267,7 @@ public interface IStudent {
  1. 如果一个方法有一个参数，那么这个方法的作用就是写入数据到指定的SharedPreferences文件中，key是方法名，值是传入的参数；
  2. 如果一个方法没有参数并且方法的返回值不是void，那么这个方法的作用就是从指定的SharedPreferences文件中读取数据，key是方法名。
 
-##### 混淆时注意事项：
+### 混淆时注意事项：
 * 不要混淆XPrefs中的注解类型，添加混淆配置：
 ```
       -keep class * extends java.lang.annotation.Annotation { *; }
