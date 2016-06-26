@@ -3,7 +3,7 @@ package com.huxq17.xprefs.example;
 import com.huxq17.xprefs.annotations.XIgnore;
 
 /**
- * Created by 2144 on 2016/6/23.
+ * Created by huxq17 on 2016/6/23.
  */
 public class UserBean {
     /**
