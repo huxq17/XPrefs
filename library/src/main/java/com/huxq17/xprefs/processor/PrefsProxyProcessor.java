@@ -79,8 +79,8 @@ public class PrefsProxyProcessor implements ProxyProcessor {
             if (methodName.startsWith("set")) {
                 String tempKey = methodName.replaceFirst("set", "");
                 if (!TextUtils.isEmpty(tempKey)) {
-                    key = tempKey.toLowerCase();
-                }else{
+                    key = toLowerCaseAtFirstChar(tempKey);
+                } else {
                     throw new RuntimeException("method name can't be set, so this exception occurred");
                 }
             } else {
@@ -125,8 +125,8 @@ public class PrefsProxyProcessor implements ProxyProcessor {
             if (methodName.startsWith("get")) {
                 String tempKey = methodName.replaceFirst("get", "");
                 if (!TextUtils.isEmpty(tempKey)) {
-                    key = tempKey.toLowerCase();
-                }else{
+                    key = toLowerCaseAtFirstChar(tempKey);
+                } else {
                     throw new RuntimeException("method name can't be get, so this exception occurred");
                 }
             } else {
@@ -179,5 +179,17 @@ public class PrefsProxyProcessor implements ProxyProcessor {
         } else {
             throw new RuntimeException("can not support type " + returnType + ",please contact author for help");
         }
+    }
+
+    /**
+     * 字符串首字母转小写
+     * @param s
+     * @return
+     */
+    public String toLowerCaseAtFirstChar(String s) {
+        if (Character.isLowerCase(s.charAt(0)))
+            return s;
+        else
+            return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
     }
 }
