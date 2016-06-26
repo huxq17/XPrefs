@@ -46,7 +46,9 @@ dependencies {
         LogUtils.i("saveAll " + userBean);
     }
 ```
-上面代码中的changeFileName和changeFileMode方法分别是设置Sharedpreferences文件的name和mode的，要注意的是，如果调用了changeFileName，那么需要调用changeFileMode的话就必须要在changeFileName之后调用。接着new了一个UserBean的实例，给需要保存的属性设置了对应的值，然后调用saveAll就把UserBean中所有的属性都保存进了SharedPreferences文件里，其中key是属性名，value是属性的值。让我们接着看看UserBean这个类，
+上面代码中的changeFileName和changeFileMode方法分别是设置Sharedpreferences文件的name和mode的，要注意的是，如果调用了changeFileName，那么需要调用changeFileMode的话就必须要在changeFileName之后调用。如果不设置name，默认操作的文件名是XPrefs，默认的mode是Context.MODE_PRIVATE。
+
+接着new了一个UserBean的实例，给需要保存的属性设置了对应的值，然后调用saveAll就把UserBean中所有的属性都保存进了SharedPreferences文件里，其中key是属性名，value是属性的值。让我们接着看看UserBean这个类，
 ```
     /**
      * final 修饰的字段不会被存储
@@ -162,7 +164,7 @@ public interface IUser {
     float getMoney();
 }
 ```
-有三个注解XSPFile,XSet和XGet，其中XSPFile是用来指定file name和mode的，用来标记接口，作用域是类。
+有三个注解XSPFile,XSet和XGet，这三个注解都不是必需的。其中XSPFile是用来指定file name和mode的，用来标记接口，作用域是类。
 
 ```
 @XSPFile(fileName = "IUser", fileMode = Context.MODE_PRIVATE)
