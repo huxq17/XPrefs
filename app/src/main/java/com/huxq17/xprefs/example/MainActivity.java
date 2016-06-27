@@ -1,5 +1,6 @@
 package com.huxq17.xprefs.example;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -60,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
     private void saveAll() {
         //如果想切换写入的sharedpreferences文件，可以调用
 //        XPrefs.changeFileName("your custom sp file's name");
-        //如果设置Mode，必须在changeFileName之后调用
-//        XPrefs.changeFileMode(Context.MODE_PRIVATE);
+        //如果设置Mode，如果调用了changeFileName方法，则必须在changeFileName之后调用
+        XPrefs.changeFileMode(Context.MODE_PRIVATE);
         //或者直接调用
 //        XPrefs.changeFileNameAndMode("your custom sp file's name", Context.MODE_PRIVATE);
 
