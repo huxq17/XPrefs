@@ -222,7 +222,9 @@ public interface IEmployee {
 }
 ```
 可以看到，不用注解以后，代码少了将近一半。
+
 这个时候key主要是通过解析方法名来得到的，所以一个方法以set开头的方法的作用就是写入数据到指定的SharedPreferences文件中，其中key就是方法名除去set的后半部分，且首字母小写，举个例子，方法setName的key就是name；
+
 那么一个以get开头的方法的作用也是很明显了，就是从SharedPreferences文件中读取数据，其中key就是方法名出去get的后半部分，首字母也是小写，举个例子，方法getName的key就是name。看上去已经很方便了，但是这都不算什么，更骚的在后面。
 
 ####*最后一种用法*
