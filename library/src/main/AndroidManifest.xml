@@ -2,7 +2,7 @@
     package="com.huxq17.xprefs">
 
     <application
-        android:label="@string/app_name"
+        android:label="XPrefs"
         >
 
     </application>
