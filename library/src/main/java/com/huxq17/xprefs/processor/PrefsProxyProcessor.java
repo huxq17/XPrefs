@@ -136,46 +136,51 @@ public class PrefsProxyProcessor implements ProxyProcessor {
         if (TextUtils.isEmpty(key)) {
             throw new RuntimeException("SharedPreferences's key " + key + "  is empty, so this exception occurred");
         }
-        if (!XPrefs.contains(key, fileName, fileMode)) {
-            throw new RuntimeException("SharedPreferences's file " + fileName + " do not contain key=" + key + ", so this exception occurred");
-        }
+//        if (!XPrefs.contains(key, fileName, fileMode)) {
+//            throw new RuntimeException("SharedPreferences's file " + fileName + " do not contain key=" + key + ", so this exception occurred");
+//        }
         Type returnType = method.getGenericReturnType();
         SharedPreferences sp = XPrefs.getSharedPrefs(fileName, fileMode);
         if (returnType == Integer.TYPE) {
+            int result;
             try {
-                sp.getInt(key, -1);
+                result = sp.getInt(key, -1);
             } catch (ClassCastException e) {
                 throw new RuntimeException(String.format(MSG_ERROR_RETURN_TYPE, key, returnType, method.getName()));
             }
-            return sp.getInt(key, -1);
+            return result;
         } else if (returnType == Float.TYPE) {
+            float result;
             try {
-                sp.getFloat(key, -1);
+                result = sp.getFloat(key, -1);
             } catch (ClassCastException e) {
                 throw new RuntimeException(String.format(MSG_ERROR_RETURN_TYPE, key, returnType, method.getName()));
             }
-            return sp.getFloat(key, -1);
+            return result;
         } else if (returnType == Long.TYPE) {
+            long result;
             try {
-                sp.getLong(key, -1);
+                result = sp.getLong(key, -1);
             } catch (ClassCastException e) {
                 throw new RuntimeException(String.format(MSG_ERROR_RETURN_TYPE, key, returnType, method.getName()));
             }
-            return sp.getLong(key, -1);
+            return result;
         } else if (returnType == Boolean.TYPE) {
+            boolean result;
             try {
-                sp.getBoolean(key, false);
+                result = sp.getBoolean(key, false);
             } catch (ClassCastException e) {
                 throw new RuntimeException(String.format(MSG_ERROR_RETURN_TYPE, key, returnType, method.getName()));
             }
-            return sp.getBoolean(key, false);
+            return result;
         } else if (returnType == String.class) {
+            String result;
             try {
-                sp.getString(key, "");
+                result = sp.getString(key, "");
             } catch (ClassCastException e) {
                 throw new RuntimeException(String.format(MSG_ERROR_RETURN_TYPE, key, returnType, method.getName()));
             }
-            return sp.getString(key, "");
+            return result;
         } else {
             throw new RuntimeException("can not support type " + returnType + ",please contact author for help");
         }
@@ -183,6 +188,7 @@ public class PrefsProxyProcessor implements ProxyProcessor {
 
     /**
      * 字符串首字母转小写
+     *
      * @param s
      * @return
      */

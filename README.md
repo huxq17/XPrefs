@@ -7,7 +7,7 @@
 
 ```groovy
 dependencies {
-   compile 'com.huxq17.xprefs:xprefs:1.0.0'
+   compile 'com.huxq17.xprefs:xprefs:1.1.0'
 }
 ```
 ### **用法**
