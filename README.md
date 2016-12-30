@@ -290,8 +290,6 @@ public interface IStudent {
 * [androidInject](https://github.com/wangjiegulu/androidInject)
 
 ### 关于我
-QQ：1491359569
-QQ群：537610843 (加群备注：XPrefs)
 邮箱：huxq17@163.com
 
 ### License
